@@ -22,7 +22,7 @@
         // String to hold word to be guessed
         let chosenWord = ''
         // array of already guessed letters
-        const lettersGuessed = []
+        let lettersGuessed = []
         // Number of available guesses
         let guesses = 10
         // number of game losses
@@ -82,11 +82,13 @@
                        if (guesses <= 0) {
                             losses++
                             document.getElementById('losses').textContent = losses
-                           document.getElementById(winLose).textContent = 'Oh no! You lost!'
+                           document.getElementById('winLose').textContent = 'Oh no! You lost!'
                            document.getElementById('instructions').textContent = 'Press enter to play a new game'
                        }
                     } 
-                    displayWord()
+                } else if (event.keyCode === 13) {
+                    guesses = 10
+                    newRound()
                 }
             }
 
