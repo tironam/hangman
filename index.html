@@ -38,15 +38,20 @@
             let wordDisp = ' '
             // loop over the word and create characters
             for (let i = 0; i < chosenWord.length; i++) {
+                //display the letter if already guessed
                 if (lettersGuessed.indexOf(chosenWord[i]) !== -1) {
                     wordDisp += chosenWord[i]
+                    // Otherwise display a blank
                 } else {
                     isWin = false
                     wordDisp += '_ '
                 }
             }
+            // show current progression of word
             document.getElementById('word').innerHTML = wordDisp
+            // Checks to see if all letters have been guessed
             if (isWin) {
+                // Changes game state to over and increases wins
                 isOver = true
                 wins++
                 document.getElementById('wins').textContent = wins
@@ -55,14 +60,18 @@
             }
         }
 
-        // picks a new word to be guessed and updates display
+        // start new word and original game state
         const newRound = () => {
+            // set initial values for game variables
             isOver = false
             guesses = 10
             lettersGuessed = []
+            // Chooses a new random word
             chosenWord = words[Math.floor(Math.random() * words.length)]
-            console.log(chosenWord)
+            // console.log(chosenWord)
+            // Render current word state
             displayWord()
+            // Reset display info
             document.getElementById('winLose').textContent = ''
             document.getElementById('instructions').textContent = ''
             document.getElementById('guesses').textContent = guesses
@@ -72,7 +81,7 @@
 
             //  key press event listener
             document.onkeydown = event => {
-                // makes sure the key is between a-z and not already guessed
+                // Check letter if already guessed and game is not over
                 if (!isOver && event.keyCode >= 65 && 
                     event.keyCode <= 90 &&
                     lettersGuessed.indexOf(event.key) === -1) {
@@ -81,10 +90,13 @@
                     // check to make sure guessed letter is in word
                     if (chosenWord.indexOf(event.key) !== -1) {
                         displayWord()
+                        // If guessed wrong...
                     } else {
                         guesses --
                        document.getElementById('guesses').textContent = guesses
+                    //    Lose game if out of guesses
                        if (guesses <= 0) {
+                        //    Set game state to over and increase losses
                             AisOver = true
                             losses++
                             document.getElementById('losses').textContent = losses
@@ -92,11 +104,13 @@
                            document.getElementById('instructions').textContent = 'Press enter to play a new game'
                        }
                     } 
+                // Handles enter key
                 } else if (event.keyCode === 13 && isOver) {
                     newRound()
                 }
             }
 
+                // Starts new round
             newRound()
 
     </script>
