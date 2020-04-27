@@ -7,24 +7,90 @@
 </head>
 <body>
     
-<p id="word"></p>
+    <p id="winLose"></p>
+    <p id="instructions"></p>
+    <p>Guesses: <span id="guesses"></span></p>
+    <p id="word"></p>
+    <p>wins: <span id="wins"></span></p>
+    <p>losses: <span id="losses"></span></p>
 
     <script>
 
         // Array of potential words
         const words = ['pizza', 'hamburger', 'hotdog', 'burrito', 'spaghetti', 'taco']
+        // You want the chosenWord in the global scope
+        // String to hold word to be guessed
+        let chosenWord = ''
+        // array of already guessed letters
         const lettersGuessed = []
+        // Number of available guesses
+        let guesses = 10
+        // number of game losses
+        let losses = 0
+        // Number of game wins
+        let wins = 0
 
-        document.onkeyup = event => {
-            if (event.keyCode >= 65 && 
-            event.keyCode <= 90 &&
-            lettersGuessed.indexOf(event.key) === -1) {
-            lettersGuessed.push(event.key)
-            console.log(lettersGuessed)
+        // function to display the word
+        const displayWord = () => {
+            let isWin = true
+            let wordDisp = ' '
+            // loop over the word and create characters
+            for (let i = 0; i < chosenWord.length; i++) {
+                if (lettersGuessed.indexOf(chosenWord[i]) !== -1) {
+                    wordDisp += chosenWord[i]
+                } else {
+                    isWin = false
+                    wordDisp += '_ '
+                }
+            }
+            document.getElementById('word').innerHTML = wordDisp
+            if (isWin) {
+                wins++
+                document.getElementById('wins').textContent = wins
+                document.getElementById('winLose').textContent = 'Congrats! You won!'
+                document.getElementById('instructions').textContent = 'Press enter to play a new game'
+            }
+        }
+
+        // picks a new word to be guessed and updates display
+        const newRound = () => {
+            lettersGuessed = []
+            chosenWord = words[Math.floor(Math.random() * words.length)]
+            console.log(chosenWord)
+            displayWord()
+            document.getElementById('winLose').textContent = ''
+            document.getElementById('instructions').textContent = ''
+            document.getElementById('guesses').textContent = guesses
+            document.getElementById('losses').textContent = losses
+            document.getElementById('wins').textContent = wins
+        }
+
+            //  key press event listener
+            document.onkeyup = event => {
+                // makes sure the key is between a-z and not already guessed
+                if (event.keyCode >= 65 && 
+                    event.keyCode <= 90 &&
+                    lettersGuessed.indexOf(event.key) === -1) {
+                    // add key to already guessed letters
+                    lettersGuessed.push(event.key)
+                    // check to make sure guessed letter is in word
+                    if (chosenWord.indexOf(event.key) !== -1) {
+                        displayWord()
+                    } else {
+                        guesses --
+                       document.getElementById('guesses').textContent = guesses
+                       if (guesses <= 0) {
+                            losses++
+                            document.getElementById('losses').textContent = losses
+                           document.getElementById(winLose).textContent = 'Oh no! You lost!'
+                           document.getElementById('instructions').textContent = 'Press enter to play a new game'
+                       }
+                    } 
+                    displayWord()
                 }
             }
 
-
+            newRound()
 
     </script>
 </body>
