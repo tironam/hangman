@@ -13,10 +13,17 @@
 
         // Array of potential words
         const words = ['pizza', 'hamburger', 'hotdog', 'burrito', 'spaghetti', 'taco']
+        const lettersGuessed = []
 
         document.onkeyup = event => {
-            console.log(evemt)
-        }
+            if (event.keyCode >= 65 && 
+            event.keyCode <= 90 &&
+            lettersGuessed.indexOf(event.key) === -1) {
+            lettersGuessed.push(event.key)
+            console.log(lettersGuessed)
+                }
+            }
+
 
 
     </script>
